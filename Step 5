@@ -1,0 +1,38 @@
+void display() {
+    ifstream inFile;
+    inFile.open("student.dat");
+    if (!inFile.is_open()) {
+        printf("Error opening file for reading.\n");
+        return;
+    }
+
+    int count = getNumber();
+    Student* students = new Student[count];
+
+    for (int i = 0; i < count; ++i) {
+        inFile >> ws;
+        getline(inFile, students[i].name);
+        inFile >> students[i].studentID;
+        inFile >> students[i].numTests;
+        students[i].testScores = new int[students[i].numTests];
+        for (int j = 0; j < students[i].numTests; ++j) {
+            inFile >> students[i].testScores[j];
+        }
+        inFile >> students[i].average;
+    }
+
+    for (int i = 0; i < count; ++i) {
+        cout << left << setw(30) << students[i].name;
+        cout << setw(15) << students[i].studentID;
+        for (int j = 0; j < students[i].numTests; ++j) {
+            cout << setw(5) << students[i].testScores[j];
+        }
+        cout << endl;
+    }
+
+    for (int i = 0; i < count; ++i) {
+        delete[] students[i].testScores;
+    }
+    delete[] students;
+    inFile.close();
+}
